@@ -4,10 +4,11 @@ import Header from "./components/Header"
 import Total from "./components/Total"
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
-    parts: [
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
       {
         name: 'Fundamentals of React',
         exercises: 10,
@@ -29,12 +30,34 @@ const App = () => {
         id: 4
       }
     ]
+  },
+  {
+    name: 'Node.js',
+    id: 2,
+    parts: [
+      {
+        name: 'Routing',
+        exercises: 3,
+        id: 1
+      },
+      {
+        name: 'Middlewares',
+        exercises: 7,
+        id: 2
+      }
+    ]
   }
+]
 
   return (
     <div>
-      <Course course={course}/>
-      <Total parts={course.parts} />
+      <h1>Web development curriculum</h1>
+      {courses.map((item) => (
+        <div key={item.id}>
+          <Course course={item}/>
+          <Total parts={item.parts} />
+        </div>
+      ))}
     </div>
   )
 }
