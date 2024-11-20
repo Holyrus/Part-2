@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
+import Persons from './components/Persons';
 
 const App = () => {
 
@@ -45,30 +48,20 @@ const App = () => {
 
   return (
     <div>
-      <div>debug: {newName}</div>
-      <div>debug: {newNumber}</div>
       <h2>Phonebook</h2>
-      <label>Filter shown with </label>
-      <input value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
-      <form onSubmit={handleAddNumber}>
-        <h2>Add a new</h2>
-        <div>
-          name: <input value={newName} onChange={handleInputChange} />
-        </div>
-        <div>
-          number: <input type='number' value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
+
+      <Filter filterValue={searchTerm} onChangeHandler={(e) => setSearchTerm(e.target.value)}/>
+      
+      <h2>Add a new</h2>
+
+      <PersonForm onSubmitHandler={handleAddNumber} nameInputValue={newName} nameInputChange={handleInputChange} 
+                  numberInputValue={newNumber} numberInputChange={handleNumberChange}
+      />
+
       <h2>Numbers</h2>
-      {filteredPersons.map((person) => (
-        <p key={person.id}>{person.name} {person.number}</p>
-      ))}
-      {filteredPersons.length === 0 && (
-        <p>No matches found</p>
-      )}
+
+      <Persons filteredPersonsArr={filteredPersons}/>
+
     </div>
   )
 }
