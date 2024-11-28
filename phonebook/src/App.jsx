@@ -3,6 +3,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import axios from 'axios';
+import numbersService from './services/numbers';
 
 const App = () => {
 
@@ -10,29 +11,41 @@ const App = () => {
   const [newName, setNewName] = useState('')
 
   useEffect(() => {
-    console.log('Effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('Promise fulfilled')
-        setPersons(response.data);
+    numbersService
+      .getAll()
+      .then(initialNumbers => {
+        setPersons(initialNumbers);
       })
   }, [])
-  console.log('rendered', persons.length, 'persons')
 
   const handleAddNumber = (event) => {
     event.preventDefault();
     const newNameObject = {
-      name: newName, number: newNumber, id:persons.length + 1
+      name: newName, number: newNumber
     }
+
     if (newName !== '' && newNumber !== '' && !persons.some(person => person.name === newName)) {
-    setPersons(persons.concat(newNameObject));
-    setNewName('');
-    setNewNumber('');
+      numbersService
+        .create(newNameObject)
+        .then(returnedNameObject => {
+          setPersons(persons.concat(returnedNameObject));
+          setNewName('');
+          setNewNumber('');
+        })
     } else if (newName === '' || newNumber === '') {
       alert('Input field is empty');
     } else {
       alert(`${newName} is already added to phonebook`);
+    }
+  }
+
+  const removeNumberOf = (id) => {
+    const removedNumber = persons.find(number => number.id === id)
+    const confirmDelete = window.confirm(`Delete ${removedNumber.name} ?`);
+    if (confirmDelete) {
+      numbersService
+      .remove(id, removedNumber)
+      setPersons(persons.filter(number => number.id !== id))
     }
   }
 
@@ -67,7 +80,14 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons filteredPersonsArr={filteredPersons}/>
+      {filteredPersons.map((person) => (
+        <p key={person.id}>{person.name} {person.number}
+          <button onClick={() => removeNumberOf(person.id)}>X</button>
+        </p>
+      ))}
+      {filteredPersons.length === 0 && (
+        <p>No matches found</p>
+      )}
 
     </div>
   )

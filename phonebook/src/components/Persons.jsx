@@ -1,12 +1,14 @@
 
 
-const Persons = (props) => {
+const Persons = ({ filteredPersonsArr, removeNumber }) => {
   return (
     <div>
-      {props.filteredPersonsArr.map((person) => (
-        <p key={person.id}>{person.name} {person.number}</p>
+      {filteredPersonsArr.map((person) => (
+        <p key={person.id}>{person.name} {person.number}
+          <button onClick={() => removeNumber(() => person.id)}>X</button>
+        </p>
       ))}
-      {props.filteredPersonsArr.length === 0 && (
+      {filteredPersonsArr.length === 0 && (
         <p>No matches found</p>
       )}
     </div>
