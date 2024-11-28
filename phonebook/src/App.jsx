@@ -35,7 +35,19 @@ const App = () => {
     } else if (newName === '' || newNumber === '') {
       alert('Input field is empty');
     } else {
-      alert(`${newName} is already added to phonebook`);
+      const confirmReplace = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
+      if (confirmReplace) {
+        const number = persons.find(num => num.name === newName);
+        const numberId = number.id;
+        const replacedNumber = { ...number, number: newNumber}
+        numbersService
+          .replace(numberId, replacedNumber)
+          .then(returnedNumber => {
+            setPersons(persons.map(num => num.id === numberId ? returnedNumber : num))
+            setNewName('');
+            setNewNumber('');
+          })
+      }
     }
   }
 
@@ -44,8 +56,8 @@ const App = () => {
     const confirmDelete = window.confirm(`Delete ${removedNumber.name} ?`);
     if (confirmDelete) {
       numbersService
-      .remove(id, removedNumber)
-      setPersons(persons.filter(number => number.id !== id))
+        .remove(id, removedNumber)
+        setPersons(persons.filter(number => number.id !== id))
     }
   }
 
