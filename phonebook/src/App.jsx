@@ -4,11 +4,15 @@ import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import axios from 'axios';
 import numbersService from './services/numbers';
+import SuccessNotification from './components/SuccessNotification';
+import ErrorNotification from './components/ErrorNotification';
 
 const App = () => {
 
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     numbersService
@@ -31,6 +35,12 @@ const App = () => {
           setPersons(persons.concat(returnedNameObject));
           setNewName('');
           setNewNumber('');
+          setSuccessMessage(
+            `Successfully added ${newName}`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 3000)
         })
     } else if (newName === '' || newNumber === '') {
       alert('Input field is empty');
@@ -46,6 +56,20 @@ const App = () => {
             setPersons(persons.map(num => num.id === numberId ? returnedNumber : num))
             setNewName('');
             setNewNumber('');
+            setSuccessMessage(
+              `Successfully updated ${newName}`
+            )
+            setTimeout(() => {
+              setSuccessMessage(null);
+            }, 3000)
+          })
+          .catch(error => {
+            setErrorMessage(
+              `Information of ${newName} has already been removed from server`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 3000)
           })
       }
     }
@@ -58,6 +82,12 @@ const App = () => {
       numbersService
         .remove(id, removedNumber)
         setPersons(persons.filter(number => number.id !== id))
+        setSuccessMessage(
+          `Contact was successfully deleted`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 3000)
     }
   }
 
@@ -81,6 +111,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <SuccessNotification message={successMessage} />
+      <ErrorNotification message={errorMessage} />
 
       <Filter filterValue={searchTerm} onChangeHandler={(e) => setSearchTerm(e.target.value)}/>
       
