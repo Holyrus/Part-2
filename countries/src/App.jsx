@@ -28,7 +28,6 @@ const App = () => {
 
 
   // Weather data
-  const [city, setCity] = useState('');
   const [forecast, setForecast] = useState([])
 
 
@@ -38,7 +37,8 @@ const App = () => {
       .getAllForecast(`${filteredCountries[0].capital[0]}`)
       .then(initialForecast => {
         setForecast(initialForecast);
-        console.log(filteredCountries[0].capital[0])
+        // console.log(filteredCountries[0].capital[0])
+        // console.log(forecast.weather[0].icon)
       })
     }
   }, [filteredCountries])
@@ -76,6 +76,7 @@ const App = () => {
 
             <h2>Weather in {country.capital}</h2>
             <p>Temperature {Math.floor(forecast.main.temp - 273.15)} Celcius</p>
+            
             <p>Wind {forecast.wind.speed} m/s</p>
           </div>
         )) : (
