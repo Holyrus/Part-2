@@ -21,6 +21,11 @@ const App = () => {
     country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
+  const showHandle = (id) => {
+    const showedCountry = countries.find(country => country.area === id);
+    setSearchTerm(showedCountry.name.common);
+  }
+
   console.log(filteredCountries)
 
 
@@ -38,7 +43,7 @@ const App = () => {
         <p>Too many matches, specify another filter</p>
       ) : filteredCountries.length < 10 && filteredCountries.length > 1 ? 
         filteredCountries.map((country) => (
-          <p key={country.area}>{country.name.common}</p>
+          <p key={country.area}>{country.name.common} <button onClick={() => showHandle(country.area)}>Show</button></p>
         )) : filteredCountries.length === 1 ? 
         filteredCountries.map((country) => (
           <div key={country.area}>
