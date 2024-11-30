@@ -2,7 +2,7 @@ import axios from "axios";
 const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api/all'
 const forecastUrl = 'https://api.openweathermap.org/data/2.5/weather?q=';
 
-const APIkey = 'f1b9193cf4e81cf24d3bd88573eac0b9';
+const APIkey = import.meta.env.VITE_SOME_KEY
 
 const getAll = () => {
     const request = axios.get(baseUrl);
@@ -15,3 +15,4 @@ const getAllForecast = (city) => {
 }
 
 export default { getAll, getAllForecast }
+

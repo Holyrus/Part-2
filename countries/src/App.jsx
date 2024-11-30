@@ -76,7 +76,7 @@ const App = () => {
 
             <h2>Weather in {country.capital}</h2>
             <p>Temperature {Math.floor(forecast.main.temp - 273.15)} Celcius</p>
-            
+            <img src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`} alt="Icon" />
             <p>Wind {forecast.wind.speed} m/s</p>
           </div>
         )) : (
