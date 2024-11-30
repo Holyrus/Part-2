@@ -26,8 +26,24 @@ const App = () => {
     setSearchTerm(showedCountry.name.common);
   }
 
-  console.log(filteredCountries)
 
+  // Weather data
+  const [city, setCity] = useState('');
+  const [forecast, setForecast] = useState([])
+
+
+  useEffect(() => {
+    if (filteredCountries.length > 0) {
+      countriesService
+      .getAllForecast(`${filteredCountries[0].capital[0]}`)
+      .then(initialForecast => {
+        setForecast(initialForecast);
+        console.log(filteredCountries[0].capital[0])
+      })
+    }
+  }, [filteredCountries])
+
+  //--------------
 
   return (
     <div>
@@ -57,7 +73,11 @@ const App = () => {
               ))}
             </ul>
             <img src={country.flags.png} alt={country.flags.alt} />
-          </div>      
+
+            <h2>Weather in {country.capital}</h2>
+            <p>Temperature {Math.floor(forecast.main.temp - 273.15)} Celcius</p>
+            <p>Wind {forecast.wind.speed} m/s</p>
+          </div>
         )) : (
           <p>No matches</p>
         )
