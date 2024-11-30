@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
-import Persons from './components/Persons';
-import axios from 'axios';
 import numbersService from './services/numbers';
 import SuccessNotification from './components/SuccessNotification';
 import ErrorNotification from './components/ErrorNotification';
